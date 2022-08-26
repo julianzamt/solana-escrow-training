@@ -18,6 +18,7 @@ pub enum EscrowInstruction {
         /// The amount party A expects to receive of token Y
         amount: u64,
     },
+    
 }
 impl EscrowInstruction {
     /// Unpacks a byte buffer into a [EscrowInstruction](enum.EscrowInstruction.html).
@@ -26,6 +27,9 @@ impl EscrowInstruction {
 
         Ok(match tag {
             0 => Self::InitEscrow {
+                amount: Self::unpack_amount(rest)?,
+            },
+            1 => Self::Exchange {
                 amount: Self::unpack_amount(rest)?,
             },
             _ => return Err(InvalidInstruction.into()),
